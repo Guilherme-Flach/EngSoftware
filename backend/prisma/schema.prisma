@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  accountId BigInt @default(autoincrement()) @id
+  username String @unique
+  email String @unique
+  password String
+
+  // Inheritance
+  customers Customer[]
+  rescuers Rescuer[]
+
+}
+
+model Customer  {
+  account Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade) 
+  accountId BigInt @id
+
+  rescueRequests RescueRequest[]
+}
+
+model Rescuer  {
+  account Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade) 
+  accountId BigInt @id
+
+  rescueProposals RescueProposal[]
+}
+
+model RescueRequest {
+  rescueRequestId BigInt @default(autoincrement()) @id
+
+  customer Customer @relation(fields: [customerId], references: [accountId], onDelete: Cascade) 
+  customerId BigInt
+
+  rescueProposals RescueProposal[]
+}
+
+model RescueProposal {
+  rescueProposalId BigInt @default(autoincrement()) @id
+
+  rescueRequest RescueRequest @relation(fields: [rescueRequestId], references: [rescueRequestId], onDelete: Cascade)
+  rescueRequestId BigInt
+
+  rescuer Rescuer @relation(fields: [rescuerId], references: [accountId], onDelete: Cascade)
+  rescuerId BigInt
+}

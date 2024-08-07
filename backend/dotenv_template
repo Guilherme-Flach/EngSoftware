@@ -1,0 +1,2 @@
+
+DATABASE_URL="mysql://user:password@server:port/dbname?schema=public"
