@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const fetchedLogin = await prisma.user.findFirst({
+    const fetchedLogin = await prisma.account.findFirst({
       where: {
         username: username,
         password: password,
@@ -18,9 +18,10 @@ router.post("/", async (req, res) => {
     });
 
     if (fetchedLogin) {
-      res.cookie("userId", fetchedLogin.id, { signed: true });
+      res.cookie("userId", fetchedLogin.accountId, { signed: true });
       res.cookie("username", fetchedLogin.username);
       res.cookie("email", fetchedLogin.email);
+      res.cookie("accountType", fetchedLogin.accountType)
 
       res.status(200).json("Login bem sucedido!");
     } else {
@@ -35,10 +36,10 @@ router.post("/", async (req, res) => {
 // DEBUG ONLY: Pegar o cookie pra testar no browser
 router.get("/debug", async (req, res) => {
   try {
-    const fetchedLogin = await prisma.user.findFirst();
+    const fetchedLogin = await prisma.account.findFirst();
 
     if (fetchedLogin) {
-      res.cookie("userId", fetchedLogin.id, { signed: true });
+      res.cookie("userId", fetchedLogin.accountId, { signed: true });
       res.cookie("username", fetchedLogin.username);
       res.cookie("email", fetchedLogin.email);
       console.log(fetchedLogin);

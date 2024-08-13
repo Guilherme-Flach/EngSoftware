@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <GlobalStyles></GlobalStyles>
         <MainHeader><ImageLogoText></ImageLogoText></MainHeader>
         <Component {...pageProps} />
-        <Footer>Lidea Inc. 2021</Footer>
+        <Footer>Iguincho Inc. 2024</Footer>
       </>
     </AuthContextProvider>
   );

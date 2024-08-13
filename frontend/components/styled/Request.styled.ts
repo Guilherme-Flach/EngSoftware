@@ -6,10 +6,10 @@ export const StyledRequest = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  background-color: #fff9c4;
-  border-radius: 5px;
+  background-color: rgb(32,32,32);
+  color: #f0f0f0;
+  border-radius: 20px;
   margin-top: 10px;
-  height: 500px;
   padding: 0px 20px 20px 20px;
 
   width: 300px;
@@ -85,7 +85,7 @@ export const DeleteButton = styled.button`
   border-radius: 7px;
   border:none;
 
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 
   &:hover {
         filter: brightness(1.2);

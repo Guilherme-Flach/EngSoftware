@@ -12,13 +12,14 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
 
   function setUserInfo() {
-    const { username, email } = parseCookies(undefined);
+    const { username, email, accountType, userId } = parseCookies(undefined);
     //there is no need to get the userId token and verify it exists
     //because thats handled in getServerSideProps in SSR
 
     setUser({
       username,
       email,
+      accountType,
     });
   }
 
@@ -43,21 +44,24 @@ export const AuthContextProvider = ({
       destroyCookie(undefined, "username");
       destroyCookie(undefined, "email");
       destroyCookie(undefined, "userId");
+      destroyCookie(undefined, "accountType");
     } catch (error) {
       return false;
     }
     return true;
-  } 
+  }
 
   async function createAccount(
     username: string,
     email: string,
-    password: string
+    password: string,
+    accountType: string
   ): Promise<string | boolean> {
     try {
-      await axios.post("/users/create", { username, password, email });
+      await axios.post("/users/create", { username, password, email, accountType });
       return await login(username, password);
     } catch (error: any) {
+      console.log(error)
       return (error.response.data as string) || ""; //axios error payload
     }
   }
@@ -72,6 +76,7 @@ export const AuthContextProvider = ({
 interface User {
   username: string;
   email: string;
+  accountType: string;
 }
 
 interface AuthContextValue {
@@ -80,7 +85,8 @@ interface AuthContextValue {
   createAccount: (
     username: string,
     email: string,
-    password: string
+    password: string,
+    accountType: string
   ) => Promise<boolean | string>;
   logout: () => Promise<boolean>;
 }

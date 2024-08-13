@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Router } from "express";
+import { json, Router } from "express";
 
 const router = Router();
 
@@ -8,12 +8,16 @@ const prisma = new PrismaClient();
 // Create user
 router.post("/create", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, accountType } = req.body;
 
-     // Verify if email isn't taken:
-     const checkEmail = await prisma.user.findUnique({
-      where : {
-        email : email
+    if (email.length < 5) {
+      return res.status(409).json("Email inválido!");
+    }
+
+    // Verify if email isn't taken:
+    const checkEmail = await prisma.account.findUnique({
+      where: {
+        email: email
       }
     });
 
@@ -23,9 +27,9 @@ router.post("/create", async (req, res) => {
     }
 
     // Verify if username isnt taken
-    const checkUsername = await prisma.user.findUnique({
-      where : {
-        username : username
+    const checkUsername = await prisma.account.findUnique({
+      where: {
+        username: username
       }
     });
 
@@ -33,16 +37,31 @@ router.post("/create", async (req, res) => {
       return res.status(409).json("Já existe um usuário com este nome.");
     }
 
-    const user = await prisma.user.create({
+    const user = await prisma.account.create({
       data: {
         username: username,
         email: email,
         password: password,
+        accountType: accountType,
       },
     });
 
+    if (accountType == "GUINCHEIRO") {
+      await prisma.rescuer.create({
+        data: {
+          accountId: user.accountId
+        }
+      })
+    } else {
+      await prisma.customer.create({
+        data: {
+          accountId: user.accountId
+        },
+      })
+    }
+
     // Return the created user
-    res.status(200).json(user);
+    res.status(200).json();
   } catch (e) {
     res.status(500).json("Erro no Servidor!");
     console.log(e);
@@ -53,9 +72,9 @@ router.post("/create", async (req, res) => {
 router.get("/find/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const selectedUser = await prisma.user.findUnique({
+    const selectedUser = await prisma.account.findUnique({
       where: {
-        id: id,
+        accountId: id,
       },
     });
 
@@ -72,9 +91,9 @@ router.put("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const { email, password } = req.body;
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.account.update({
       where: {
-        id: id,
+        accountId: id,
       },
       data: {
         email: email,
@@ -94,9 +113,9 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const deletedUser = await prisma.user.delete({
+    const deletedUser = await prisma.account.delete({
       where: {
-        id: id,
+        accountId: id,
       },
     });
 
@@ -111,7 +130,7 @@ router.delete("/:id", async (req, res) => {
 // List all users
 router.get("/list", async (req, res) => {
   try {
-    const userList = await prisma.user.findMany();
+    const userList = await prisma.account.findMany();
 
     console.table(userList);
     // Return the selected user

@@ -4,7 +4,7 @@ import Router from "next/router";
 import { parseCookies } from "nookies";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { LoginButton, LoginButtonsContainer, LoginContainer, LoginErrorMessage, LoginField, LoginFieldsContainer } from "../components/styled/Login.styled";
+import { LoginButton, LoginButtonsContainer, LoginContainer, LoginErrorMessage, LoginField, AccountTypeField, LoginFieldsContainer, AccountTypeOption } from "../components/styled/Login.styled";
 import { Container, ImageLogoText, ImageLogo } from "../components/styled/Sections.styled";
 
 const Login: NextPage = () => {
@@ -12,6 +12,7 @@ const Login: NextPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [accountType, setAccountType] = useState("GUINCHEIRO");
 
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState(false);
   const [error, setError] = useState("");
@@ -19,16 +20,14 @@ const Login: NextPage = () => {
   async function submit() {
     //create account
     if (isCreatingNewAccount) {
-      const response = await createAccount(username, email, password);
+      const response = await createAccount(username, email, password, accountType);
       if (typeof response === "string") {
         //api returned an error
         setError(response);
         return;
       }
 
-      // === true just in case response is a weird error object that evaluates to true
-      if (response === true) Router.push("/");
-      else setError("Não foi possível criar sua conta");
+      Router.push("/");
       return;
     }
 
@@ -41,8 +40,8 @@ const Login: NextPage = () => {
   return (
     <Container>
       <Head>
-        <title>Ideas - Login</title>
-        <meta name="description" content="gamer ideas login" />
+        <title>iGuincho - Login</title>
+        <meta name="description" content="iguincho" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -69,12 +68,24 @@ const Login: NextPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
           />
+          {isCreatingNewAccount && (
+            <AccountTypeField
+              value={accountType}
+              onChange={(e) => setAccountType(e.target.value)}>
+              <AccountTypeOption
+                value="GUINCHEIRO">Guincheiro
+              </AccountTypeOption>
+              <AccountTypeOption
+                value="CLIENTE">Cliente
+              </AccountTypeOption>
+            </AccountTypeField>
+          )}
         </LoginFieldsContainer>
         <LoginButtonsContainer>
           <LoginButton onClick={submit}>{isCreatingNewAccount
-              ? "Criar conta"
-              : "Login"}</LoginButton>
-          <LoginButton onClick={() => {setIsCreatingNewAccount(!isCreatingNewAccount); setError("");}}>
+            ? "Criar conta"
+            : "Login"}</LoginButton>
+          <LoginButton onClick={() => { setIsCreatingNewAccount(!isCreatingNewAccount); setError(""); }}>
             {isCreatingNewAccount
               ? "Fazer login em uma conta existente"
               : "Criar uma conta em vez disso"}
@@ -87,15 +98,24 @@ const Login: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { userId: token } = parseCookies(ctx);
+  const { userId: token, accountType: accountType } = parseCookies(ctx);
 
   if (token) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+    if (accountType == "GUINCHEIRO") {
+      return {
+        redirect: {
+          destination: "/guincheiro",
+          permanent: false,
+        },
+      };
+    } else if (accountType == "CLIENTE") {
+      return {
+        redirect: {
+          destination: "/cliente",
+          permanent: false,
+        },
+      };
+    }
   }
 
   return {

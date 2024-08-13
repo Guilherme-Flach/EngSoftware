@@ -11,46 +11,57 @@ datasource db {
 }
 
 model Account {
-  accountId BigInt @default(autoincrement()) @id
-  username String @unique
-  email String @unique
-  password String
+  accountId   Int    @id @default(autoincrement())
+  username    String @unique
+  email       String @unique
+  password    String
+  accountType String
 
   // Inheritance
   customers Customer[]
-  rescuers Rescuer[]
-
+  rescuers  Rescuer[]
 }
 
-model Customer  {
-  account Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade) 
-  accountId BigInt @id
+model Customer {
+  account   Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade)
+  accountId Int     @id
 
   rescueRequests RescueRequest[]
 }
 
-model Rescuer  {
-  account Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade) 
-  accountId BigInt @id
+model Rescuer {
+  account   Account @relation(fields: [accountId], references: [accountId], onDelete: Cascade)
+  accountId Int     @id
 
   rescueProposals RescueProposal[]
 }
 
 model RescueRequest {
-  rescueRequestId BigInt @default(autoincrement()) @id
+  rescueRequestId Int @id @default(autoincrement())
 
-  customer Customer @relation(fields: [customerId], references: [accountId], onDelete: Cascade) 
-  customerId BigInt
+  customer   Customer @relation(fields: [customerId], references: [accountId], onDelete: Cascade)
+  customerId Int
+
+  location String
+  problem  String
+
+  creationDate DateTime @default(now())
+  isFinished   Boolean  @default(false)
 
   rescueProposals RescueProposal[]
 }
 
 model RescueProposal {
-  rescueProposalId BigInt @default(autoincrement()) @id
+  rescueProposalId Int @id @default(autoincrement())
 
-  rescueRequest RescueRequest @relation(fields: [rescueRequestId], references: [rescueRequestId], onDelete: Cascade)
-  rescueRequestId BigInt
+  rescueRequest   RescueRequest @relation(fields: [rescueRequestId], references: [rescueRequestId], onDelete: Cascade)
+  rescueRequestId Int
 
-  rescuer Rescuer @relation(fields: [rescuerId], references: [accountId], onDelete: Cascade)
-  rescuerId BigInt
+  price    Float
+  accepted Boolean @default(false)
+
+  creationDate DateTime @default(now())
+
+  rescuer   Rescuer @relation(fields: [rescuerId], references: [accountId], onDelete: Cascade)
+  rescuerId Int
 }

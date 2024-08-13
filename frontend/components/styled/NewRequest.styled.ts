@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
-export const StyledNewIdea = styled.div`
+export const StyledNewRequest = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ff6f00;
+  background-color: rgb(32,32,32);
+  color: #f0f0f0;
 
   margin: 20px;
   padding: 5px 0 0 0;
@@ -20,6 +21,8 @@ export const StyledNewIdea = styled.div`
     border: none;
     width: 100%;
     text-align: center;
+    color: #f0f0f0;
+    background-color: rgba(0,0,0,0);
   }
 
   input {
@@ -33,7 +36,8 @@ export const StyledNewIdea = styled.div`
 
   button {
     margin-top: 10px;
-    background-color: #ff3d00;
+    background-color: #fafafa;
+    color: #010101;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     font-size: 16px;

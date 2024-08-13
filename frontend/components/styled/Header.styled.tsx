@@ -3,17 +3,18 @@ import styled from 'styled-components';
 
 export const MainHeader = styled.div`
     width: 100%;
-    background-color: #ff6f00;
+    background-color: rgb(32, 32, 32);
     color: #fafafa;
     font-weight: bold;
     text-align: center;
     padding: 7px 0px;
     font-size: 25px;
+    max-height: 10vh;
 `
 
 export const WelcomeHeader = styled.div`
     width: 100%;
-    background-color: #e65100;
+    background-color: #2e2e2e;
     color: #ffffff;
     font-weight: bold;
     text-align: right;

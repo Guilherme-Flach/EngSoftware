@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  background-color: rgb(34, 36, 38);
+  background-color: rgb(13, 13, 16);
 
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
-  min-height: 85vh;
+  height: 86.5vh;
 `;
 
-export const IdeasContainer = styled.div`
+export const RequestsContainer = styled.div`
   width: 80%;
   flex: 1;
   border-radius: 6px;
@@ -24,14 +24,38 @@ export const IdeasContainer = styled.div`
   padding: 10px;
 `;
 
+export const IndexHelpMeContainer = styled.div`
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    margin-bottom: 10px;
+`
+
+export const IndexHelpMeButton = styled.button`
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    margin-bottom: 10px;
+`
+
 export const ImageLogoText = styled.img.attrs((props) => ({
-  src: "/lidealogo_text.png",
+  src: "/iguinchologo_text.png",
 }))`
-  height: 64px;
+  height:10vh;
 `;
 
 export const ImageLogo = styled.img.attrs((props) => ({
-  src: "/lidealogo.png",
+  src: "/iguinchologo.png",
 }))`
   height: 200px;
 `;

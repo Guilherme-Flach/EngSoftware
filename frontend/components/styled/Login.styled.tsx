@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 
 export const LoginContainer = styled.div`
-    background-color: rgba(24, 26, 27, 0.92);;
+    background-color: rgb(32,32,32);
 
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
     /* border: 1px solid red; */
-    border-radius: 5px;
-
+    border-radius: 20px;
     padding: 20px 10px;
 `
 
@@ -27,20 +26,47 @@ export const LoginFieldsContainer = styled.div`
 
 export const LoginField = styled.input`
     width: 330px;
-    margin-bottom: -2px;
+    margin-bottom: 10px;
     border-radius: 2px;
     line-height: 20px;
     padding: 5px;
     box-shadow: none;
-    border: 3px solid #fff59d;
+    border: 3px solid #131313;
     font-size: 20px;
 
     background-color: rgba(0,0,0,0);
     color: rgb(200, 195, 188);
 
     &:focus {
-        outline: 3px solid #f57f17;
+        outline: 3px solid #16131b;
     }
+`
+
+export const AccountTypeField = styled.select`
+    width: 330px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    line-height: 20px;
+    padding: 5px;
+    box-shadow: none;
+    border: 3px solid #131313;
+    font-size: 20px;
+
+    background-color: rgba(0,0,0,0);
+    color: rgb(203, 203, 203);
+
+    &:focus {
+        outline: 3px solid #16131b;
+    }
+`
+
+export const AccountTypeOption = styled.option`
+    width: 330px;
+    border: 3px solid #131313;
+    font-size: 20px;
+
+    background-color:rgb(255, 255, 255, 0);
+    color: rgba(20,20,20,255);
 `
 
 export const LoginButtonsContainer = styled.div`
@@ -52,12 +78,12 @@ export const LoginButtonsContainer = styled.div`
 `
 
 export const LoginButton = styled.button`
-    background-color: #ffc107;
-    color: #000;
+    background-color: #c7c7c7;
+    color: #181818;
     border: none;
 
     font-size: 14px;
-    padding: 10px 23px;
+    padding: 6px 23px;
     margin-bottom: 5px;
     border-radius: 8px;
     max-width: 63%;
@@ -75,5 +101,5 @@ export const LoginButton = styled.button`
 export const LoginErrorMessage = styled.div`
     margin-top: 15px;
     font-weight: bold;
-    color: #F00;
+    color: #7a0303;
 `

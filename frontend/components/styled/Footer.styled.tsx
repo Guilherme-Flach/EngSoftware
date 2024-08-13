@@ -10,5 +10,5 @@ export const Footer = styled.div`
     padding: 2px 5px;
     padding-bottom: 25px;
     margin: none;
-    
+    overflow-y:clip
 `
