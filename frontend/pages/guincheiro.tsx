@@ -57,7 +57,7 @@ const Home: NextPage = () => {
       {/* <NewRequest setRefetch={setRefetch}></NewRequest> */}
 
       <RequestsContainer>
-        <Requests sorting={sorting} refetch={refetch} accountType="GUINCHEIRO"></Requests>
+        <Requests sorting={sorting} refetch={refetch} requestsType="GUINCHEIRO"></Requests>
       </RequestsContainer>
     </Container>
   );

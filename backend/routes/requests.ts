@@ -105,7 +105,7 @@ router.delete("/:requestId", async (req, res) => {
 });
 
 // list all requests (sort by date)
-router.get("/own", async (req, res) => {
+router.get("/own/active", async (req, res) => {
     try {
         const requestsFound = await prisma.rescueRequest.findMany({
             orderBy: {
@@ -132,7 +132,51 @@ router.get("/own", async (req, res) => {
             where: {
                 customerId: {
                     equals: Number(req.signedCookies.userId),
-                }
+                },
+                isFinished: {
+                    equals: false,
+                },
+            },
+        });
+        // Return the selected user
+        res.status(200).json(requestsFound);
+    } catch (e) {
+        res.status(400).json("Erro!");
+        console.log(e);
+    }
+});
+
+router.get("/own/finished", async (req, res) => {
+    try {
+        const requestsFound = await prisma.rescueRequest.findMany({
+            orderBy: {
+                creationDate: "desc",
+            },
+            select: {
+                rescueRequestId: true,
+                location: true,
+                creationDate: true,
+                problem: true,
+                isFinished: true,
+                customer: {
+                    select: {
+                        account: {
+                            select: {
+                                username: true,
+                                email: true
+                            },
+
+                        }
+                    },
+                },
+            },
+            where: {
+                customerId: {
+                    equals: Number(req.signedCookies.userId),
+                },
+                isFinished: {
+                    equals: true,
+                },
 
             },
         });

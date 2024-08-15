@@ -6,23 +6,21 @@ import IRequest from "../types/IRequest";
 const Requests = ({
   sorting,
   refetch,
-  accountType,
+  requestsType: requestsType,
 }: {
   sorting: requestSorting;
   refetch: boolean;
-  accountType: string;
+  requestsType: string;
 }) => {
   const [requests, setRequests] = useState<IRequest[]>([]);
 
   async function fetchRequests() {
-    if (accountType == "GUINCHEIRO") {
+    if (requestsType == "GUINCHEIRO") {
       return fetchAllRequests();
-    } else if (accountType == "CLIENTE") {
-      return fetchOwnRequests();
-    }
+    } else {
+      return fetchOwnRequests(requestsType);
 
-    //default
-    fetchOwnRequests();
+    }
   }
 
   useEffect(() => {

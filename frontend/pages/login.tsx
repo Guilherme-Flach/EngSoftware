@@ -88,7 +88,7 @@ const Login: NextPage = () => {
           <LoginButton onClick={() => { setIsCreatingNewAccount(!isCreatingNewAccount); setError(""); }}>
             {isCreatingNewAccount
               ? "Fazer login em uma conta existente"
-              : "Criar uma conta em vez disso"}
+              : "Criar uma conta"}
           </LoginButton>
         </LoginButtonsContainer>
         <LoginErrorMessage>{error}</LoginErrorMessage>

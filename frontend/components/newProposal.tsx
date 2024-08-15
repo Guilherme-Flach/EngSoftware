@@ -1,37 +1,35 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { createRequest } from "../helpers/requests";
-import { StyledNewRequest } from "./styled/NewRequest.styled";
+import { StyledNewProposal } from "./styled/NewProposal.styled";
+import CurrencyInput from "react-currency-input-field";
+import { createProposal } from "../helpers/proposals";
 
-export const NewRequest = ({
+export const NewProposal = ({
   setRefetch,
 }: {
   setRefetch: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [problem, setProblem] = useState("");
-  const [location, setLocation] = useState("");
+  const [price, setPrice] = useState<string | number>();
 
   function onSubmit() {
-    createRequest(problem, location);
+    if (!isNaN(Number(price)) && Number(price) > 0) {
+      createProposal(Number(price));
+    }
     setRefetch((prev) => !prev);
   }
 
   return (
-    <StyledNewRequest>
-      <p>Tenho um problema!</p>
-      <input
-        type="text"
-        placeholder="Localização atual"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        maxLength={300}
+    <StyledNewProposal>
+      <CurrencyInput
+        id="input-example"
+        name="input-price"
+        decimalsLimit={2}
+        prefix="R$ "
+        placeholder="Valor a cobrar"
+        value={price}
+        onValueChange={(value, name, values) => setPrice(value)}
       />
-      <input
-        type="text"
-        placeholder="Descrição do Problema"
-        value={problem}
-        onChange={(e) => setProblem(e.target.value)}
-      />
-      <button onClick={onSubmit}>Socorro!</button>
-    </StyledNewRequest>
+      <button onClick={onSubmit}>Fazer Proposta</button>
+    </StyledNewProposal>
   );
 };

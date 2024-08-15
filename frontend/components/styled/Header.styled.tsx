@@ -9,7 +9,7 @@ export const MainHeader = styled.div`
     text-align: center;
     padding: 7px 0px;
     font-size: 25px;
-    max-height: 10vh;
+    max-height: 5vh;
 `
 
 export const WelcomeHeader = styled.div`

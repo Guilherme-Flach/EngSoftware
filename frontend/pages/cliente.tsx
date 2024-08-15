@@ -11,6 +11,8 @@ import {
 import {
   Container,
   RequestsContainer,
+  RequestsContainerParent,
+  RequestsContainerTitle
 } from "../components/styled/Sections.styled";
 import { MdHourglassBottom, MdThumbDown, MdThumbUp } from "react-icons/md";
 import { requestSorting } from "../helpers/requests";
@@ -44,9 +46,16 @@ const Home: NextPage = () => {
 
       <NewRequest setRefetch={setRefetch}></NewRequest>
 
-      <RequestsContainer>
-        <Requests sorting={sorting} refetch={refetch} accountType="CLIENTE"></Requests>
-      </RequestsContainer>
+      <RequestsContainerParent>
+        <RequestsContainer>
+          <RequestsContainerTitle>Pedidos Atuais</RequestsContainerTitle>
+          <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
+        </RequestsContainer>
+        <RequestsContainer>
+          <RequestsContainerTitle>Pedidos Passados</RequestsContainerTitle>
+          <Requests sorting={sorting} refetch={refetch} requestsType="finished"></Requests>
+        </RequestsContainer>
+      </RequestsContainerParent>
     </Container>
   );
 };

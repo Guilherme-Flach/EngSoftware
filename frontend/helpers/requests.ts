@@ -1,7 +1,7 @@
 import axios from "./axios";
 
-export const fetchOwnRequests = () =>
-  axios.get(`http://localhost:3001/requests/own`);
+export const fetchOwnRequests = (type: string) =>
+  axios.get(`http://localhost:3001/requests/own/${type}`);
 
 export const fetchAllRequests = () =>
   axios.get(`http://localhost:3001/requests/all`);

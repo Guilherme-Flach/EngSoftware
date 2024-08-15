@@ -78,12 +78,12 @@ export const LoginButtonsContainer = styled.div`
 `
 
 export const LoginButton = styled.button`
-    background-color: #c7c7c7;
+    background-color: #eeeeee;
     color: #181818;
     border: none;
 
-    font-size: 14px;
-    padding: 6px 23px;
+    font-size: 1.0rem;
+    padding: 6px 20px;
     margin-bottom: 5px;
     border-radius: 8px;
     max-width: 63%;

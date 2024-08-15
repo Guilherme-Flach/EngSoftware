@@ -6,9 +6,11 @@ export const StyledRequest = styled.div`
   align-items: center;
   justify-content: space-between;
 
+
   background-color: rgb(32,32,32);
   color: #f0f0f0;
   border-radius: 20px;
+  margin: 5px;
   margin-top: 10px;
   padding: 0px 20px 20px 20px;
 
