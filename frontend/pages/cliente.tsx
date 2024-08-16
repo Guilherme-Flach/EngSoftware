@@ -48,12 +48,12 @@ const Home: NextPage = () => {
 
       <RequestsContainerParent>
         <RequestsContainer>
-          <RequestsContainerTitle>Pedidos Atuais</RequestsContainerTitle>
+          <RequestsContainerTitle>Propostas</RequestsContainerTitle>
           <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
         </RequestsContainer>
         <RequestsContainer>
-          <RequestsContainerTitle>Pedidos Passados</RequestsContainerTitle>
-          <Requests sorting={sorting} refetch={refetch} requestsType="finished"></Requests>
+          <RequestsContainerTitle>Meus Pedidos</RequestsContainerTitle>
+          <Requests sorting={sorting} refetch={refetch} requestsType="all"></Requests>
         </RequestsContainer>
       </RequestsContainerParent>
     </Container>

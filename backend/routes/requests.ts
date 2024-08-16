@@ -188,6 +188,124 @@ router.get("/own/finished", async (req, res) => {
     }
 });
 
+// list all requests (sort by date)
+router.get("/own/all", async (req, res) => {
+    try {
+        const requestsFound = await prisma.rescueRequest.findMany({
+            orderBy: {
+                creationDate: "desc",
+            },
+            select: {
+                rescueRequestId: true,
+                location: true,
+                creationDate: true,
+                problem: true,
+                isFinished: true,
+                customer: {
+                    select: {
+                        account: {
+                            select: {
+                                username: true,
+                                email: true
+                            },
+
+                        }
+                    },
+                },
+            },
+        });
+        // Return the selected user
+        res.status(200).json(requestsFound);
+    } catch (e) {
+        res.status(400).json("Erro!");
+        console.log(e);
+    }
+});
+
+
+router.get("/guincheiro/active", async (req, res) => {
+    try {
+
+        const requestsFound = await prisma.rescueRequest.findMany({
+            orderBy: {
+                creationDate: "desc",
+            },
+            where: {
+                rescueProposals: {
+                    every: {
+                        accepted: {
+                            equals: true,
+                        },
+                        rescuerId: {
+                            equals: Number(req.signedCookies.userId),
+                        }
+                    }
+                }
+            },
+            select: {
+                rescueRequestId: true,
+                location: true,
+                creationDate: true,
+                problem: true,
+                isFinished: false,
+                customer: {
+                    select: {
+                        account: {
+                            select: {
+                                username: true,
+                                email: true
+                            },
+                        }
+                    },
+                },
+            },
+        });
+        // Return the selected user
+        res.status(200).json();
+    } catch (e) {
+        res.status(400).json("Erro!");
+        console.log(e);
+    }
+});
+
+router.get("/guincheiro/open", async (req, res) => {
+    try {
+        const requestsFound = await prisma.rescueRequest.findMany({
+            orderBy: {
+                creationDate: "desc",
+            },
+            select: {
+                rescueRequestId: true,
+                location: true,
+                creationDate: true,
+                problem: true,
+                customer: {
+                    select: {
+                        account: {
+                            select: {
+                                username: true,
+                                email: true
+                            },
+
+                        }
+                    },
+                },
+            },
+            where: {
+                isFinished: {
+                    equals: false,
+                }
+
+            },
+        });
+        // Return the selected user
+        res.status(200).json(requestsFound);
+    } catch (e) {
+        res.status(400).json("Erro!");
+        console.log(e);
+    }
+});
+
 router.get("/all", async (req, res) => {
     try {
         const requestsFound = await prisma.rescueRequest.findMany({

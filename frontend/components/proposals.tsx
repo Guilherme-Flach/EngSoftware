@@ -4,23 +4,23 @@ import RequestType from "./request";
 import IRequest from "../types/IRequest";
 import { AuthContext } from "../contexts/AuthContext";
 
-const Requests = ({
+const Proposals = ({
   sorting,
   refetch,
-  requestsType: requestsType,
+  proposalsType: proposalsType,
 }: {
   sorting: requestSorting;
   refetch: boolean;
-  requestsType: string;
+  proposalsType: string;
 }) => {
-  const [requests, setRequests] = useState<IRequest[]>([]);
+  const [proposals, setProposals] = useState<IRequest[]>([]);
   const { user } = useContext(AuthContext);
 
-  async function fetchRequests() {
+  async function fetchproposals() {
     if (user?.accountType == "GUINCHEIRO") {
-      return fetchRescuerRequests(requestsType)
+      return fetchRescuerRequests(proposalsType)
     } else {
-      return fetchClientRequests(requestsType);
+      return fetchClientRequests(proposalsType);
 
     }
   }
@@ -29,7 +29,7 @@ const Requests = ({
     async function fetch() {
       const data: IRequest = await fetchRequests();
       if (!data) return;
-      setRequests(data);
+      setProposals(data);
     }
     fetch();
   }, [sorting, refetch]); //re-fetch every time sorting updates
@@ -38,7 +38,7 @@ const Requests = ({
     const interval = setInterval(async () => {
       const { data } = await fetchRequests();
       if (!data) return;
-      setRequests(data);
+      setProposals(data);
     }, 2500);
 
     return () => clearInterval(interval);
@@ -47,16 +47,16 @@ const Requests = ({
 
   function DeleteRequest(i: number, id: number) {
     deleteRequest(id);
-    setRequests((prevRequests) => {
-      const newRequests = [...prevRequests];
+    setProposals((prevProposals) => {
+      const newRequests = [...prevProposals];
       newRequests.splice(i, 1);
       return newRequests;
     });
   }
 
   function updateSelf(i: number, newSelf: IRequest) {
-    setRequests((prevRequests) => {
-      const newRequests = [...prevRequests];
+    setProposals((prevProposals) => {
+      const newRequests = [...prevProposals];
       newRequests[i] = newSelf;
       return newRequests;
     });
@@ -65,8 +65,8 @@ const Requests = ({
   return (
     <>
       {refetch ? "" : ""}
-      {requests.length &&
-        requests.map((request, i) => (
+      {proposals.length &&
+        proposals.map((request, i) => (
           < RequestType
             key={request.rescueRequestId}
             self={request}
@@ -79,4 +79,4 @@ const Requests = ({
   );
 };
 
-export default Requests;
+export default Proposals;

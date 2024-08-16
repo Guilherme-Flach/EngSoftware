@@ -11,6 +11,7 @@ import {
 import {
   Container,
   RequestsContainer,
+  RequestsContainerTitle,
 } from "../components/styled/Sections.styled";
 import { requestSorting } from "../helpers/requests";
 import { NewRequest } from "../components/newRequest";
@@ -57,7 +58,11 @@ const Home: NextPage = () => {
       {/* <NewRequest setRefetch={setRefetch}></NewRequest> */}
 
       <RequestsContainer>
-        <Requests sorting={sorting} refetch={refetch} requestsType="GUINCHEIRO"></Requests>
+        <Requests sorting={sorting} refetch={refetch} requestsType="open"></Requests>
+      </RequestsContainer>
+      <RequestsContainer>
+        <RequestsContainerTitle>Seviços Ativos</RequestsContainerTitle>
+        <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
       </RequestsContainer>
     </Container>
   );

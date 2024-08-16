@@ -11,9 +11,16 @@ router.use(session);
 
 router.post("/new", async (req, res) => {
     try {
-        console.log("Powershell");
+        const { requestId, price } = req.body;
+        const proposal = await prisma.rescueProposal.create({
+            data: {
+                rescueRequestId: requestId,
+                price: price,
+                rescuerId: Number(req.signedCookies.userId),
+            }
+        })
         // Return the selected user
-        res.status(200);
+        res.status(200).json(proposal);
     } catch (e) {
         res.status(400).json("Erro!");
         console.log(e);
