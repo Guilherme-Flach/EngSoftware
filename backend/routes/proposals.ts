@@ -31,7 +31,8 @@ router.get("/open", async (req, res) => {
     try {
         const clientRequests = await prisma.rescueRequest.findMany({
             where: {
-                customerId: Number(req.signedCookies.userId)
+                customerId: Number(req.signedCookies.userId),
+                isFinished: false
             },
             select: {
                 rescueRequestId: true
@@ -51,6 +52,7 @@ router.get("/open", async (req, res) => {
                 },
 
                 select: {
+                    rescueProposalId: true,
                     price: true,
                     rescueRequest: {
                         select: {
@@ -77,6 +79,53 @@ router.get("/open", async (req, res) => {
         }
 
         res.status(200).json(proposalsFound);
+    } catch (e) {
+        res.status(400).json("Erro!");
+        console.log(e);
+    }
+});
+
+router.post("/accept", async (req, res) => {
+    try {
+        const { proposalId } = req.body;
+        // set proposal to accepted
+        const { rescueRequestId } = await prisma.rescueProposal.update({
+            where: {
+                rescueProposalId: proposalId
+            },
+            data: {
+                accepted: true,
+            },
+            select: {
+                rescueRequestId: true
+            }
+        });
+
+        console.log(rescueRequestId);
+        console.log(proposalId);
+
+        // delete all others
+        await prisma.rescueProposal.deleteMany({
+            where: {
+                rescueRequestId: rescueRequestId
+                , AND: {
+                    rescueProposalId: {
+                        not: proposalId
+                    },
+                }
+            }
+        });
+
+        // set request to finished
+        await prisma.rescueRequest.update({
+            data: {
+                isFinished: true,
+            }, where: {
+                rescueRequestId: rescueRequestId
+            }
+        });
+
+        res.status(200)
     } catch (e) {
         res.status(400).json("Erro!");
         console.log(e);

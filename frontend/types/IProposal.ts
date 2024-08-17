@@ -1,8 +1,10 @@
 export default interface IProposal {
     price: number;
-    rescueRequestId: number;
     rescueProposalId: number;
-    problem: string;
+    rescueRequest: {
+        rescueRequestId: number;
+        problem: string;
+    }
     rescuer: {
         account: {
             username: string

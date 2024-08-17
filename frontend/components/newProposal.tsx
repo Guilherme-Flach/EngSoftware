@@ -12,8 +12,9 @@ export const NewProposal = ({
 }) => {
   const [price, setPrice] = useState<string | number>();
   function onSubmit() {
-    if (!isNaN(Number(price)) && Number(price) > 0) {
-      createProposal(requestId, Number(price));
+    const priceNumber = Number(price?.toString().replace(",", "."));
+    if (!isNaN(priceNumber) && priceNumber > 0) {
+      createProposal(requestId, priceNumber);
     }
     setRefetch((prev) => !prev);
   }

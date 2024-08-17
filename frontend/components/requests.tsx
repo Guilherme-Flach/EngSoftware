@@ -17,12 +17,10 @@ const Requests = ({
   const { user } = useContext(AuthContext);
 
   async function fetchRequests() {
-    console.log(user?.accountType)
     if (user?.accountType == "GUINCHEIRO") {
       return fetchRescuerRequests(requestsType)
     } else {
       return fetchClientRequests(requestsType);
-
     }
   }
 

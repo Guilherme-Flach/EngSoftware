@@ -1,5 +1,4 @@
 import { AuthContext } from "../contexts/AuthContext";
-import { castVote as proposeService } from "../helpers/votes";
 import { findRequest } from "../helpers/requests";
 import RequestType from "../types/IRequest";
 import { StyledRequest, RequestTitle, RequestText, RequestButtonsWrapper, VoteButton, RequestUser, DeleteButton } from "./styled/Request.styled";
@@ -12,16 +11,6 @@ const Request = ({ self, deleteSelf, index, updateSelf }: Props) => {
   const [refetch, setRefetch] = useState(false);
   const [isFinished, setFinished] = useState<boolean | undefined>();
   const date = new Date(self.creationDate);
-
-  async function Propose(type: boolean) {
-    if (type === isProposed) return;
-
-    //cast vote and then update self with up to date data
-    await proposeService(type, self.rescueRequestId);
-    const { data: updatedSelf } = await findRequest(self.rescueRequestId);
-    updateSelf(index, updatedSelf);
-    setProposed(type);
-  }
 
   return (
     <StyledRequest>
