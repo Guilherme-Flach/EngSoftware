@@ -11,6 +11,7 @@ import {
 import {
   Container,
   RequestsContainer,
+  RequestsContainerParent,
   RequestsContainerTitle,
 } from "../components/styled/Sections.styled";
 import { requestSorting } from "../helpers/requests";
@@ -41,29 +42,17 @@ const Home: NextPage = () => {
         Logado como Guincheiro: {user?.username} ({user?.email}){" "}
         <LogoutButton onClick={endSession}>Sair</LogoutButton>
       </WelcomeHeader>
-      {/* <SortSelector>
-        <SortButton
-          selected={sorting == requestSorting.latest}
-          onClick={() => {
-            _setSorting(requestSorting.latest);
-          }}
-        >
-          {" "}
-          <MdHourglassBottom></MdHourglassBottom>
-          <span>Mais Recentes</span>
-        </SortButton>
 
-      </SortSelector> */}
-
-      {/* <NewRequest setRefetch={setRefetch}></NewRequest> */}
-
-      <RequestsContainer>
-        <Requests sorting={sorting} refetch={refetch} requestsType="open"></Requests>
-      </RequestsContainer>
-      <RequestsContainer>
-        <RequestsContainerTitle>Seviços Ativos</RequestsContainerTitle>
-        <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
-      </RequestsContainer>
+      <RequestsContainerParent>
+        <RequestsContainer>
+          <RequestsContainerTitle>Pedidos de Serviço</RequestsContainerTitle>
+          <Requests sorting={sorting} refetch={refetch} requestsType="open"></Requests>
+        </RequestsContainer>
+        <RequestsContainer>
+          <RequestsContainerTitle>Seviços realizados</RequestsContainerTitle>
+          <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
+        </RequestsContainer>
+      </RequestsContainerParent>
     </Container>
   );
 };

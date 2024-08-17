@@ -9,34 +9,6 @@ const prisma = new PrismaClient();
 
 router.use(session);
 
-
-// Get a request by id
-async function getRequest(id: number) {
-    const selectedRequest = await prisma.rescueRequest.findUnique({
-        where: {
-            rescueRequestId: id,
-        },
-        select: {
-            customer: {
-                select: {
-                    accountId: true,
-                    account: {
-                        select: {
-                            username: true
-                        }
-                    }
-                },
-            },
-        },
-    });
-
-    const returnedRequest = {
-        requestData: selectedRequest
-    };
-
-    return returnedRequest;
-}
-
 // Create Request
 router.post("/create", async (req, res) => {
     try {
@@ -57,22 +29,6 @@ router.post("/create", async (req, res) => {
     }
 });
 
-// // Read idea
-// router.get("/find/:id", async (req, res) => {
-//     try {
-//         const id = Number(req.params.id);
-//         const userId = Number(req.signedCookies.userId)
-//         const returnedIdea = await getIdea(id, userId)
-
-//         // Return the selected idea
-//         res.status(200).json(returnedIdea);
-//     } catch (e) {
-//         res.status(400).json("Erro!");
-//         console.log(e);
-//     }
-// });
-
-// // Delete idea
 router.delete("/:requestId", async (req, res) => {
     try {
         const requestId = Number(req.params.requestId);
@@ -122,9 +78,9 @@ router.get("/own/active", async (req, res) => {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
-
                         }
                     },
                 },
@@ -163,9 +119,9 @@ router.get("/own/finished", async (req, res) => {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
-
                         }
                     },
                 },
@@ -177,7 +133,6 @@ router.get("/own/finished", async (req, res) => {
                 isFinished: {
                     equals: true,
                 },
-
             },
         });
         // Return the selected user
@@ -206,9 +161,9 @@ router.get("/own/all", async (req, res) => {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
-
                         }
                     },
                 },
@@ -222,9 +177,23 @@ router.get("/own/all", async (req, res) => {
     }
 });
 
-
 router.get("/guincheiro/active", async (req, res) => {
     try {
+        const rescueProposals = await prisma.rescueProposal.findMany({
+            where: {
+                accepted: true,
+                rescuerId: Number(req.signedCookies.userId),
+            },
+            select: {
+                rescueProposalId: true
+            },
+
+        })
+
+        const rescueProposalsArray: number[] = [];
+        rescueProposals.forEach((e) => {
+            rescueProposalsArray.push(e.rescueProposalId);
+        })
 
         const requestsFound = await prisma.rescueRequest.findMany({
             orderBy: {
@@ -232,12 +201,9 @@ router.get("/guincheiro/active", async (req, res) => {
             },
             where: {
                 rescueProposals: {
-                    every: {
-                        accepted: {
-                            equals: true,
-                        },
-                        rescuerId: {
-                            equals: Number(req.signedCookies.userId),
+                    some: {
+                        rescueProposalId: {
+                            in: rescueProposalsArray
                         }
                     }
                 }
@@ -247,21 +213,23 @@ router.get("/guincheiro/active", async (req, res) => {
                 location: true,
                 creationDate: true,
                 problem: true,
-                isFinished: false,
+                isFinished: true,
                 customer: {
                     select: {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
                         }
                     },
                 },
             },
         });
-        // Return the selected user
-        res.status(200).json();
+
+        console.log(requestsFound)
+        res.status(200).json(requestsFound);
     } catch (e) {
         res.status(400).json("Erro!");
         console.log(e);
@@ -284,9 +252,9 @@ router.get("/guincheiro/open", async (req, res) => {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
-
                         }
                     },
                 },
@@ -322,7 +290,8 @@ router.get("/all", async (req, res) => {
                         account: {
                             select: {
                                 username: true,
-                                email: true
+                                email: true,
+                                phoneNumber: true,
                             },
 
                         }

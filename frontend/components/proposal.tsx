@@ -19,9 +19,12 @@ const Proposal = ({ self, index, updateSelf }: Props) => {
     <StyledRequest>
       <RequestTitle>{self.rescuer.account.username}</RequestTitle>
 
+      <RequestText><i>Telefone:{self.rescuer.account.phoneNumber}</i></RequestText>
+      <RequestText><i>Email:{self.rescuer.account.email}</i></RequestText>
+
       <RequestText>Problema: {self.rescueRequest.problem}</RequestText>
 
-      <RequestText>Preço: {self.price}</RequestText>
+      <RequestText>Preço: {self.price.toFixed(2)}</RequestText>
 
       <AcceptButton onClick={() => accept()}>
         Aceitar

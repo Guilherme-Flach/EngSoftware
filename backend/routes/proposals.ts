@@ -40,7 +40,7 @@ router.get("/open", async (req, res) => {
         })
 
         let proposalsFound: {
-            price: number; rescueRequest: { rescueRequestId: number; problem: string; }; rescuer: { account: { username: string; email: string; }; }
+            price: number; rescueRequest: { rescueRequestId: number; problem: string; }; rescuer: { account: { username: string; email: string, phoneNumber: string; }; }
         }[] = [];
 
         for (let request of clientRequests) {
@@ -66,6 +66,7 @@ router.get("/open", async (req, res) => {
                                 select: {
                                     username: true,
                                     email: true,
+                                    phoneNumber: true,
                                 }
                             }
                         }

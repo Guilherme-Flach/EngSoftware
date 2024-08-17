@@ -12,6 +12,7 @@ const Login: NextPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [accountType, setAccountType] = useState("GUINCHEIRO");
 
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState(false);
@@ -20,7 +21,7 @@ const Login: NextPage = () => {
   async function submit() {
     //create account
     if (isCreatingNewAccount) {
-      const response = await createAccount(username, email, password, accountType);
+      const response = await createAccount(username, email, phoneNumber, password, accountType);
       if (typeof response === "string") {
         //api returned an error
         setError(response);
@@ -49,12 +50,17 @@ const Login: NextPage = () => {
         <ImageLogo></ImageLogo>
         <LoginFieldsContainer>
           {isCreatingNewAccount && (
-            <LoginField
+            <><LoginField
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-            />
+              placeholder="Email" />
+              <LoginField
+                type="tel"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Telefone" /></>
           )}
           <LoginField
             type="text"

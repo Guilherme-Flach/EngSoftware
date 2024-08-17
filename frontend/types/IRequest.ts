@@ -8,6 +8,7 @@ export default interface IRequest {
     account: {
       username: string
       email: string
+      phoneNumber: string,
     }
   }
 }

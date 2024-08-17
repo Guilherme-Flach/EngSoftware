@@ -18,6 +18,9 @@ const Request = ({ self, deleteSelf, index, updateSelf }: Props) => {
 
       <RequestText>Problema: {self.problem}</RequestText>
 
+      <RequestText><i>Telefone:{self.customer.account.phoneNumber}</i></RequestText>
+
+      <RequestText><i>Email:{self.customer.account.email}</i></RequestText>
 
       <RequestText><i>{date.toLocaleString()}</i></RequestText>
 

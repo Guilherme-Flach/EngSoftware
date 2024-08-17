@@ -48,7 +48,7 @@ export const RequestsContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 10px;
-  overflow-y: clip;
+  overflow-y: auto;
 `;
 
 export const IndexHelpMeContainer = styled.div`

@@ -9,6 +9,7 @@ export default interface IProposal {
         account: {
             username: string
             email: string
+            phoneNumber: string
         }
     }
 }
