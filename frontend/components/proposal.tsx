@@ -1,18 +1,16 @@
 import { AuthContext } from "../contexts/AuthContext";
 import { castVote as proposeService } from "../helpers/votes";
 import { findRequest } from "../helpers/requests";
-import RequestType from "../types/IRequest";
-import { StyledRequest, RequestTitle, RequestText, RequestButtonsWrapper, VoteButton, RequestUser, DeleteButton } from "./styled/Request.styled";
+import ProposalType from "../types/IProposal";
+import { StyledRequest, RequestTitle, RequestText, RequestButtonsWrapper, VoteButton, RequestUser, DeleteButton, AcceptButton } from "./styled/Request.styled";
 import { useContext, useState } from "react";
 import { NewProposal } from "./newProposal";
 
-const Request = ({ self, deleteSelf, index, updateSelf }: Props) => {
+const Proposal = ({ self, index, updateSelf }: Props) => {
   const { user } = useContext(AuthContext);
   const [isProposed, setProposed] = useState<boolean | undefined>();
   const [refetch, setRefetch] = useState(false);
   const [isFinished, setFinished] = useState<boolean | undefined>();
-  const date = new Date(self.creationDate);
-
   async function Propose(type: boolean) {
     if (type === isProposed) return;
 
@@ -25,33 +23,27 @@ const Request = ({ self, deleteSelf, index, updateSelf }: Props) => {
 
   return (
     <StyledRequest>
-      <RequestTitle>{self.location}</RequestTitle>
-
       <RequestText>Problema: {self.problem}</RequestText>
 
+      <RequestText>Usuário: {self.rescuer.account.username}</RequestText>
 
-      <RequestText><i>{date.toLocaleString()}</i></RequestText>
+      <RequestText>Preço: {self.price}</RequestText>
 
       {/* Is from the same user */}
-      {(user?.email == self.customer.account.email) &&
-        // Is still open
-        (!self.isFinished) &&
-        <DeleteButton onClick={() => deleteSelf(index, self.rescueRequestId)}>
-          Deletar
-        </DeleteButton>}
-      {self.isFinished && <i>Finalizado.</i>}
-      {(user?.accountType == "GUINCHEIRO") && (!self.isFinished) &&
-        <NewProposal setRefetch={setRefetch} requestId={self.rescueRequestId}></NewProposal>
+      {
+        <AcceptButton onClick={() => console.log(self.rescueProposalId)}>
+          Aceitar
+        </AcceptButton>
       }
-    </StyledRequest>
+    </StyledRequest >
   );
 };
 
 interface Props {
-  self: RequestType;
+  self: ProposalType;
   deleteSelf: (i: number, id: number) => void;
   index: number;
-  updateSelf: (i: number, self: RequestType) => void;
+  updateSelf: (i: number, self: ProposalType) => void;
 }
 
-export default Request;
+export default Proposal;

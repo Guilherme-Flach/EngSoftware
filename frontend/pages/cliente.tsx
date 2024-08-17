@@ -17,6 +17,7 @@ import {
 import { MdHourglassBottom, MdThumbDown, MdThumbUp } from "react-icons/md";
 import { requestSorting } from "../helpers/requests";
 import { NewRequest } from "../components/newRequest";
+import Proposals from "../components/proposals";
 
 const Home: NextPage = () => {
   const { user, logout } = useContext(AuthContext);
@@ -49,7 +50,7 @@ const Home: NextPage = () => {
       <RequestsContainerParent>
         <RequestsContainer>
           <RequestsContainerTitle>Propostas</RequestsContainerTitle>
-          <Requests sorting={sorting} refetch={refetch} requestsType="active"></Requests>
+          <Proposals refetch={refetch}></Proposals>
         </RequestsContainer>
         <RequestsContainer>
           <RequestsContainerTitle>Meus Pedidos</RequestsContainerTitle>

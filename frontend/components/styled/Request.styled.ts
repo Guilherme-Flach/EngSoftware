@@ -98,3 +98,22 @@ export const DeleteButton = styled.button`
       filter: brightness(0.7);
   }
 `;
+
+export const AcceptButton = styled.button`
+  background-color: #075D24;
+  color: #fdfdfd;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border:none;
+
+  margin-bottom: 10px;
+
+  &:hover {
+        filter: brightness(1.2);
+        cursor: pointer;
+  }
+
+  &:active {
+      filter: brightness(0.7);
+  }
+`;

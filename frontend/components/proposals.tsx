@@ -1,42 +1,40 @@
 import { useContext, useEffect, useState } from "react";
 import { deleteRequest, fetchAllRequests, fetchClientRequests, fetchRescuerRequests, requestSorting } from "../helpers/requests";
-import RequestType from "./request";
+import ProposalType from "./proposal";
 import IRequest from "../types/IRequest";
+import { fetchOpenProposals } from "../helpers/proposals";
+import IProposal from "../types/IProposal";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Proposals = ({
-  sorting,
   refetch,
-  proposalsType: proposalsType,
 }: {
-  sorting: requestSorting;
   refetch: boolean;
-  proposalsType: string;
 }) => {
-  const [proposals, setProposals] = useState<IRequest[]>([]);
+  const [proposals, setProposals] = useState<IProposal[]>([]);
   const { user } = useContext(AuthContext);
 
-  async function fetchproposals() {
-    if (user?.accountType == "GUINCHEIRO") {
-      return fetchRescuerRequests(proposalsType)
+  async function fetchProposals() {
+    return fetchOpenProposals()
+    console.log(user?.accountType)
+    if (user?.accountType == "CLIENTE") {
     } else {
-      return fetchClientRequests(proposalsType);
-
+      //return fetchClientRequests(proposalsType);
     }
   }
 
   useEffect(() => {
     async function fetch() {
-      const data: IRequest = await fetchRequests();
+      const data: IRequest = await fetchProposals();
       if (!data) return;
       setProposals(data);
     }
     fetch();
-  }, [sorting, refetch]); //re-fetch every time sorting updates
+  }, [refetch]); //re-fetch every time sorting updates
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const { data } = await fetchRequests();
+      const { data } = await fetchProposals();
       if (!data) return;
       setProposals(data);
     }, 2500);
@@ -54,7 +52,7 @@ const Proposals = ({
     });
   }
 
-  function updateSelf(i: number, newSelf: IRequest) {
+  function updateSelf(i: number, newSelf: IProposal) {
     setProposals((prevProposals) => {
       const newRequests = [...prevProposals];
       newRequests[i] = newSelf;
@@ -66,14 +64,14 @@ const Proposals = ({
     <>
       {refetch ? "" : ""}
       {proposals.length &&
-        proposals.map((request, i) => (
-          < RequestType
-            key={request.rescueRequestId}
-            self={request}
+        proposals.map((proposal, i) => (
+          <ProposalType
+            key={proposal.rescueProposalId}
+            self={proposal}
             deleteSelf={DeleteRequest}
             index={i}
             updateSelf={updateSelf}
-          ></RequestType >
+          ></ProposalType >
         ))}
     </>
   );

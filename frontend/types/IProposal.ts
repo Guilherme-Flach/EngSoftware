@@ -1,11 +1,9 @@
-export default interface IRequest {
-    rescueRequest: string;
+export default interface IProposal {
     price: number;
+    rescueRequestId: number;
     rescueProposalId: number;
     problem: string;
-    creationDate: Date;
-    isFinished: boolean;
-    customer: {
+    rescuer: {
         account: {
             username: string
             email: string
